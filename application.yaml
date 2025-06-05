@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-Application
+  namespace: argocd 
+spec:
+  project: default
+  source:
+    - repoURL: https://github.com/abchandravansi/argocd-repo.git  # Can point to either a Helm chart repo or a git repo.
+      targetRevision: HEAD  # Always the last/latest push on the repository.
+      path: dev  # Specific folder we are pointing or observing. 
+
+  destination:
+    # cluster API URL ( local kubernetes api server)
+    server: https://kubernetes.default.svc
+    # or cluster name
+    # name: in-cluster
+    # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
+    namespace: my-app ## Namespace provided if available use or if not create it. 
+
+  # Extra information to show in the Argo CD Application details tab
+  info:
+    - name: 'Local-Argo-CD-Cluster:'
+      value: 'Creator: Abhishek Kumar ( abchandravansi@gmail.com)'
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true ## if mentioned namespace is not available it will create it. 
+    automated: # Will check every 3 minutes if something has changed or not
+      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
