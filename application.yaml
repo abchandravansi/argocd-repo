@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: myapp-argo-Application
+  name: myapp-argo-application
   namespace: argocd 
 spec:
   project: default
   source:
-    - repoURL: https://github.com/abchandravansi/argocd-repo.git  # Can point to either a Helm chart repo or a git repo.
-      targetRevision: HEAD  # Always the last/latest push on the repository.
-      path: dev  # Specific folder we are pointing or observing. 
+    repoURL: https://github.com/abchandravansi/argocd-repo.git  # Can point to either a Helm chart repo or a git repo.
+    targetRevision: HEAD  # Always the last/latest push on the repository.
+    path: dev  # Specific folder we are pointing or observing. 
 
   destination:
     # cluster API URL ( local kubernetes api server)
